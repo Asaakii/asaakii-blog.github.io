@@ -4,6 +4,31 @@
   
     
     <entry>
+      <title>UviewCloud规则引擎入门</title>
+      <link href="/post/43e975f2.html"/>
+      <url>/post/43e975f2.html</url>
+      
+        <content type="html"><![CDATA[<h1 id="UviewCloud规则引擎入门"><a href="#UviewCloud规则引擎入门" class="headerlink" title="UviewCloud规则引擎入门"></a>UviewCloud规则引擎入门</h1><h2 id="什么是规则引擎"><a href="#什么是规则引擎" class="headerlink" title="什么是规则引擎?"></a>什么是规则引擎?</h2><p>规则引擎是基于事件开发的一个易于使用的工作流的框架；主要有3个组成部分:</p><ul><li><strong>Message</strong> - 事件接收；它可以来自设备、设备生命周期事件、REST API事件、RPC请求等传入的数据。</li><li><strong>Rule Node</strong> - 消息处理;对接收的数据进行过滤、转换或者执行。</li><li><strong>Rule Chain</strong> - 关联消息；接收上一节点的出站消息将其发送至下一个节点。</li></ul><h2 id="典型实例"><a href="#典型实例" class="headerlink" title="典型实例"></a>典型实例</h2><p>UviewCloud规则引擎是一个高度可定制的框架用于复杂事件的处理。以下是一些可以通过UviewCloud规则链配置的常见用例：</p><ul><li>在保存到数据库之前对接收的遥测数据或属性进行验证和修改。</li><li>将遥测或属性从设备复制到相关资产以便可以汇总遥测。例如：可以将多个设备中的数据汇总到相关资产中。</li><li>根据定义的条件对alarms进行创建、更新、清除。</li><li>根据设备生命周期事件触发操作。例如：如果设备处于在线&#x2F;离线状态，则创建警告。</li><li>加载所需的其他处理数据。例如：在客户设备或租户属性中定义的设备的playload温度阈值。</li><li>调用外部系统的REST API。</li><li>发生复杂事件时发送电子邮件并使用“电子邮件模板”中其他实体的属性。</li><li>在事件处理期间要考虑用户的偏好。</li><li>根据定义的条件进行RPC调用。</li><li>集成第三方消息队列例如：Kafka，Spark，AWS等。</li></ul><h2 id="Hello-World-实例"><a href="#Hello-World-实例" class="headerlink" title="Hello World 实例"></a>Hello World 实例</h2><p>你可以使用UviewCloud平台将DHT22温度传感器采集的-40°C至+ 80°C温度值进行收集。</p><p>在此教程中我们将配置UviewCloud规则引擎来存储-40至80°C范围内的所有温度，并将所有数据记录到系统日志中。</p><h4 id="添加温度并验节点"><a href="#添加温度并验节点" class="headerlink" title="添加温度并验节点"></a>添加温度并验节点</h4><p>进入UviewCloud UI中<strong>规则链库</strong>转到<strong>Root Rule Chain</strong>.</p><p><img src="C:\Users\Asaki\AppData\Roaming\Typora\typora-user-images\image-20230818111326594.png" alt="image-20230818111326594"></p><p>拖动<strong>Script 筛选器</strong> 规则节点放入链中并配置如下脚本:</p><p>使用TBEL（ThingsBoard表达式语言）或JavaScript进行用户定义函数的开发， 建议使用TBEL在ThingsBoard中的执行效率比JS更高。</p><p>数据验证脚本：</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">return msg.temperature == null</span><br><span class="line">|| (msg.temperature &gt;= -40 &amp;&amp; msg.temperature &lt;= 80);</span><br></pre></td></tr></table></figure><p>或者：</p><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">return</span> <span class="keyword">typeof</span> msg.<span class="property">temperature</span> === <span class="string">&#x27;undefined&#x27;</span></span><br><span class="line">|| (msg.<span class="property">temperature</span> &gt;= -<span class="number">40</span> &amp;&amp; msg.<span class="property">temperature</span> &lt;= <span class="number">80</span>);</span><br></pre></td></tr></table></figure><p><img src="C:\Users\Asaki\AppData\Roaming\Typora\typora-user-images\image-20230818111938376.png" alt="image-20230818111938376"></p><p>如果未定义温度属性或温度有效则脚本将返回<strong>True</strong>，否则将返回<strong>False</strong>。如果脚本返回<strong>True</strong>则传入消息将被关联到与<strong>True</strong>关系连接的下一个节点。</p><p>我们希望所有的<strong>telemetry requests</strong>都通过此脚本进行验证. 删除<strong>Message Type Switch</strong>节点和<strong>Save Telemetry</strong>节点之间的<strong>Post Telemetry</strong>关系节点。<img src="C:\Users\Asaki\AppData\Roaming\Typora\typora-user-images\image-20230818112116992.png" alt="image-20230818112116992"></p><p>将<strong>Message Type Switch</strong>节点和将<strong>Script Filter</strong>使用<strong>Post Telemetry</strong>进行连接:</p><p><img src="C:\Users\Asaki\AppData\Roaming\Typora\typora-user-images\image-20230818112226640.png" alt="image-20230818112226640"></p><p><img src="C:\Users\Asaki\AppData\Roaming\Typora\typora-user-images\image-20230818112253605.png" alt="image-20230818112253605"></p><p>将<strong>Script 筛选器</strong>节点与<strong>Save Telemetry</strong>节点使用关系<strong>True</strong>进行连接：</p><p><img src="C:\Users\Asaki\AppData\Roaming\Typora\typora-user-images\image-20230818112356506.png" alt="image-20230818112356506"></p><p>将<strong>Script 筛选器</strong>节点与<strong>Log Other</strong>节点使用关系<strong>False</strong>进行连接这样无效数据将被记录在系统日志中：</p><p><img src="C:\Users\Asaki\AppData\Roaming\Typora\typora-user-images\image-20230818112515665.png" alt="image-20230818112515665"></p><p>点击保存按钮应用更新。</p><h4 id="验证结果"><a href="#验证结果" class="headerlink" title="验证结果"></a>验证结果</h4><p>创建设备并将遥测提交到UviewCloud，点击<strong>设备</strong>并创建新的设备：</p><p><img src="C:\Users\Asaki\AppData\Roaming\Typora\typora-user-images\image-20230818112700488.png" alt="image-20230818112700488"></p><p>发布设备遥测数据使用Rest API需要从设备DHT22复制设备访问令牌。</p><p><img src="C:\Users\Asaki\AppData\Roaming\Typora\typora-user-images\image-20230818112809826.png" alt="image-20230818112809826"></p><p>使用MQTTBox送temperature&#x3D;99的消息，注意修改实际的设备令牌。</p><p><img src="C:\Users\Asaki\AppData\Roaming\Typora\typora-user-images\image-20230818114507982.png" alt="image-20230818114507982"></p><p>我们将看到<strong>设备最新遥测</strong>选项卡<strong>并没有</strong>遥测：</p><p>提交temperature&#x3D;24可以看见遥测数据保存成功。</p><p><img src="C:\Users\Asaki\AppData\Roaming\Typora\typora-user-images\image-20230818114622469.png" alt="image-20230818114622469"></p><p><img src="C:\Users\Asaki\AppData\Roaming\Typora\typora-user-images\image-20230818114636749.png" alt="image-20230818114636749"></p>]]></content>
+      
+      
+      <categories>
+          
+          <category> 技能 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> UviewCloud </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>Hello World</title>
       <link href="/post/undefined.html"/>
       <url>/post/undefined.html</url>
