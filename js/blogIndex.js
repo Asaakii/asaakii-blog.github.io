@@ -30,7 +30,7 @@ $.ajax({
         
         function showWelcome() {
         
-            let dist = getDistance(107.38779, 29.70239, ipLoacation.result.location.lng, ipLoacation.result.location.lat);
+            let dist = getDistance(117.31428，39.08652, ipLoacation.result.location.lng, ipLoacation.result.location.lat);
         
             let pos = ipLoacation.result.ad_info.nation;
             let posdesc;
@@ -69,7 +69,7 @@ $.ajax({
                             posdesc = "讲段相声吧。";
                             break;
                         case "重庆市":
-                            posdesc = "老乡！！！"
+                            posdesc = "高德地图:已到达重庆，下面交给百度地图导航。"
                             break;
                         case "河北省":
                             posdesc = "山势巍巍成壁垒，天下雄关。铁马金戈由此向，无限江山。";
@@ -124,7 +124,7 @@ $.ajax({
                             posdesc = "来碗热干面！";
                             break;
                         case "湖南省":
-                            posdesc = "74751，长沙斯塔克。";
+                            posdesc = "请我喝一杯和颜悦色";
                             break;
                         case "广东省":
                             posdesc = "老板来两斤福建人。";
@@ -136,7 +136,7 @@ $.ajax({
                             posdesc = "朝观日出逐白浪，夕看云起收霞光。";
                             break;
                         case "四川省":
-                            posdesc = "康康川妹子。";
+                            posdesc = "著名景点：老紫蜀道山";
                             break;
                         case "贵州省":
                             posdesc = "茅台，学生，再塞200。";
