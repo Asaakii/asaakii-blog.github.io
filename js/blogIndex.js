@@ -192,12 +192,9 @@ $.ajax({
             else if (date.getHours() >= 19 && date.getHours() < 24) timeChange = "<span>晚上好</span>，夜生活嗨起来！";
             else timeChange = "夜深了，早点休息，少熬夜";
         
-            document.getElementsByClassName("announcement_content")[0].innerHTML =
+            document.getElementsByClassName("card_announcement")[0].innerHTML =
                 `欢迎来自<span>${pos}</span>的小伙伴，${timeChange}<br>
-        你距离Asaakii约有<span>${dist}</span>公里，${posdesc}
-        <br>
-        <br>
-        `;
+        你距离Asaakii约有<span>${dist}</span>公里，${posdesc}`;
         }
         showWelcome()
     }
