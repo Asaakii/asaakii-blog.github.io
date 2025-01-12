@@ -30,7 +30,7 @@ $.ajax({
         
         function showWelcome() {
         
-            let dist = getDistance(117.31428, 39.08652, ipLoacation.result.location.lng, ipLoacation.result.location.lat);
+            let dist = getDistance(103.85375, 30.68934, ipLoacation.result.location.lng, ipLoacation.result.location.lat);
         
             let pos = ipLoacation.result.ad_info.nation;
             let posdesc;
@@ -63,16 +63,16 @@ $.ajax({
                     pos = ipLoacation.result.ad_info.province + " " + ipLoacation.result.ad_info.city;
                     switch (ipLoacation.result.ad_info.province) {
                         case "北京市":
-                            posdesc = "北——京——欢迎你~~~";
+                            posdesc = "AUV，这可真地道~~";
                             break;
                         case "天津市":
-                            posdesc = "讲段相声吧。";
+                            posdesc = "来到了天津卫，嘛也没学会。";
                             break;
                         case "重庆市":
                             posdesc = "高德地图:已到达重庆，下面交给百度地图导航。"
                             break;
                         case "河北省":
-                            posdesc = "山势巍巍成壁垒，天下雄关。铁马金戈由此向，无限江山。";
+                            posdesc = "这么近，那么美，周末到河北。";
                             break;
                         case "山西省":
                             posdesc = "展开坐具长三尺，已占山河五百余。";
@@ -84,7 +84,7 @@ $.ajax({
                             posdesc = "我想吃烤鸡架！";
                             break;
                         case "吉林省":
-                            posdesc = "状元阁就是东北烧烤之王。";
+                            posdesc = "吉林！（压声）";
                             break;
                         case "黑龙江省":
                             posdesc = "很喜欢哈尔滨大剧院。";
@@ -95,7 +95,7 @@ $.ajax({
                         case "江苏省":
                             switch (ipLoacation.result.ad_info.city) {
                                 case "南京市":
-                                    posdesc = "欢迎来自安徽省南京市的小伙伴。";
+                                    posdesc = "这是我挺想去的城市啦。";
                                     break;
                                 case "苏州市":
                                     posdesc = "上有天堂，下有苏杭。";
@@ -107,6 +107,28 @@ $.ajax({
                             break;
                         case "浙江省":
                             posdesc = "东风渐绿西湖柳，雁已还人未南归。";
+                            break;
+                        case "河南省":
+                            switch (ipLoacation.result.ad_info.city) {
+                                case "郑州市":
+                                    posdesc = "豫州之域，天地之中。";
+                                    break;
+                                case "南阳市":
+                                    posdesc = "臣本布衣，躬耕于南阳。此南阳非彼南阳！";
+                                    break;
+                                case "驻马店市":
+                                    posdesc = "峰峰有奇石，石石挟仙气。嵖岈山的花很美哦！";
+                                    break;
+                                case "开封市":
+                                    posdesc = "刚正不阿包青天。";
+                                    break;
+                                case "洛阳市":
+                                    posdesc = "洛阳牡丹甲天下。";
+                                    break;
+                                default:
+                                    posdesc = "可否带我品尝河南烩面啦？";
+                                    break;
+                            }
                             break;
                         case "安徽省":
                             posdesc = "蚌埠住了，芜湖起飞。";
@@ -124,7 +146,7 @@ $.ajax({
                             posdesc = "来碗热干面！";
                             break;
                         case "湖南省":
-                            posdesc = "请我喝一杯和颜悦色";
+                            posdesc = "请我喝一杯茶颜悦色";
                             break;
                         case "广东省":
                             posdesc = "老板来两斤福建人。";
@@ -136,7 +158,7 @@ $.ajax({
                             posdesc = "朝观日出逐白浪，夕看云起收霞光。";
                             break;
                         case "四川省":
-                            posdesc = "著名景点：老紫蜀道山";
+                            posdesc = "著名景点：老紫蜀道山。";
                             break;
                         case "贵州省":
                             posdesc = "茅台，学生，再塞200。";
@@ -172,7 +194,7 @@ $.ajax({
                             posdesc = "性感荷官，在线发牌。";
                             break;
                         default:
-                            posdesc = "社会主义大法好。";
+                            posdesc = "带我去你的城市逛逛吧！";
                             break;
                     }
                     break;
@@ -193,11 +215,11 @@ $.ajax({
             else timeChange = "夜深了，早点休息，少熬夜";
         
             document.getElementsByClassName("announcement_content")[0].innerHTML =
-                `欢迎来自<span>${pos}</span>的小伙伴，${timeChange}<br>
+                `欢迎来自<span>${pos}</span>的小伙伴。${timeChange}<br>
         你距离Asaakii约有<span>${dist}</span>公里，${posdesc}
         <br>
         <br>
-        个人日记尽量日更，但如果当天没啥事写或者太忙了没来得及写可能就不更。
+        看到这条记得催我日更哦。
         `;
         }
         showWelcome()
